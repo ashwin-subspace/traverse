@@ -1,0 +1,23 @@
+# build output
+build/
+*.apk
+*.apk.idsig
+*.idsig
+*.dex
+*.class
+
+# secrets and machine-local config
+*.keystore
+*.jks
+local.properties
+.env
+.env.*
+
+# editors
+.idea/
+*.iml
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0E1014</color>
+    <color name="surface">#171A21</color>
+    <color name="surface2">#1F232C</color>
+    <color name="line">#2A2F3A</color>
+    <color name="text">#E9ECF3</color>
+    <color name="muted">#8A93A6</color>
+    <color name="faint">#7E8798</color>
+    <color name="accent">#7C9CF5</color>
+    <color name="accentPressed">#AFC0FF</color>
+    <color name="accentDim">#3A4670</color>
+    <color name="warm">#E8A33D</color>
+    <color name="good">#5FCF95</color>
+    <color name="bad">#E8705F</color>
+    <color name="onAccent">#0E1014</color>
+</resources>

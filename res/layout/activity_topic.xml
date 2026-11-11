@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg"
+    android:fitsSystemWindows="true">
+
+    <TextView android:id="@+id/btnBack" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="Back"
+        android:minHeight="48dp" android:gravity="center_vertical"
+        android:textSize="15sp" android:textColor="@color/muted"
+        android:paddingLeft="22dp" android:paddingRight="22dp"/>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:scrollbars="none"
+        android:paddingLeft="22dp" android:paddingRight="22dp"
+        android:clipToPadding="false" android:paddingBottom="28dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/kTitle" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textSize="30sp"
+                android:textColor="@color/text" android:lineSpacingExtra="2dp"/>
+            <TextView android:id="@+id/kBand" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="13sp"
+                android:textColor="@color/accent" android:paddingTop="10dp"/>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="6dp"
+                android:background="@drawable/bar_track" android:layout_marginTop="12dp">
+                <View android:id="@+id/kBar" android:layout_width="0dp"
+                    android:layout_height="match_parent" android:background="@drawable/bar_fill"/>
+            </FrameLayout>
+            <TextView android:id="@+id/kMeta" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textSize="13sp"
+                android:textColor="@color/muted" android:paddingTop="12dp"
+                android:lineSpacingExtra="2dp"/>
+
+            <TextView android:id="@+id/btnLesson" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="Read the lesson"
+                android:textSize="15sp" android:textColor="@color/muted" android:gravity="center"
+                android:background="@drawable/btn_ghost"
+                android:paddingTop="15dp" android:paddingBottom="15dp"
+                android:layout_marginTop="24dp"/>
+            <TextView android:id="@+id/btnPractice" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="Practise"
+                android:textSize="15sp" android:textStyle="bold"
+                android:textColor="@color/onAccent" android:gravity="center"
+                android:background="@drawable/btn_primary"
+                android:paddingTop="15dp" android:paddingBottom="15dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView android:id="@+id/kGapsHead" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="WHAT YOU KEEP GETTING WRONG"
+                android:textSize="11sp" android:textStyle="bold" android:letterSpacing="0.16"
+                android:textColor="@color/faint" android:paddingTop="30dp"
+                android:paddingBottom="10dp" android:visibility="gone"/>
+            <LinearLayout android:id="@+id/kGaps" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

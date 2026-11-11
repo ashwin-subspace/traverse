@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg"
+    android:fitsSystemWindows="true">
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:fillViewport="true" android:scrollbars="none">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:gravity="center_horizontal"
+            android:paddingLeft="26dp" android:paddingRight="26dp"
+            android:paddingTop="48dp" android:paddingBottom="24dp">
+
+            <TextView android:id="@+id/sKicker" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="12sp"
+                android:textStyle="bold" android:letterSpacing="0.14" android:textColor="@color/good"/>
+            <TextView android:id="@+id/sScore" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="56sp"
+                android:textStyle="bold" android:textColor="@color/accent" android:paddingTop="8dp"/>
+            <TextView android:id="@+id/sTitle" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textSize="22sp"
+                android:textColor="@color/text" android:gravity="center"
+                android:paddingTop="8dp" android:lineSpacingExtra="2dp"/>
+            <TextView android:id="@+id/sBody" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textSize="16sp"
+                android:textColor="@color/muted" android:gravity="center"
+                android:paddingTop="16dp" android:lineSpacingExtra="5dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView android:id="@+id/sDone" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Done"
+        android:textSize="16sp" android:textStyle="bold" android:textColor="@color/onAccent"
+        android:gravity="center" android:background="@drawable/btn_primary"
+        android:paddingTop="15dp" android:paddingBottom="15dp"
+        android:layout_marginLeft="22dp" android:layout_marginRight="22dp"
+        android:layout_marginBottom="18dp"/>
+</LinearLayout>

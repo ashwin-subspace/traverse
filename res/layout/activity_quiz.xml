@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:paddingLeft="8dp" android:paddingRight="22dp"
+        android:paddingTop="8dp" android:paddingBottom="8dp">
+        <TextView android:id="@+id/btnBack" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="Back"
+            android:minHeight="48dp" android:gravity="center_vertical"
+            android:textSize="15sp" android:textColor="@color/muted"
+            android:paddingLeft="14dp" android:paddingRight="14dp"/>
+        <TextView android:id="@+id/qProgress" android:layout_width="0dp"
+            android:layout_weight="1" android:layout_height="wrap_content"
+            android:gravity="end" android:textSize="14sp" android:textColor="@color/muted"/>
+    </LinearLayout>
+
+    <FrameLayout android:id="@+id/qTrack" android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginLeft="22dp" android:layout_marginRight="22dp"
+        android:background="@drawable/bar_track">
+        <View android:id="@+id/qBar" android:layout_width="0dp"
+            android:layout_height="match_parent" android:background="@drawable/bar_fill"/>
+    </FrameLayout>
+
+    <ScrollView android:id="@+id/qScroll"
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:scrollbars="none"
+        android:paddingLeft="22dp" android:paddingRight="22dp"
+        android:clipToPadding="false" android:paddingTop="18dp" android:paddingBottom="16dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/qTopic" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="12sp"
+                android:textStyle="bold" android:letterSpacing="0.14"
+                android:textColor="@color/accent" android:paddingBottom="10dp"/>
+            <TextView android:id="@+id/qStem" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textSize="19sp"
+                android:textColor="@color/text" android:lineSpacingExtra="5dp"/>
+            <HorizontalScrollView android:id="@+id/qCodeScroll"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:visibility="gone" android:scrollbars="none"
+                android:background="@drawable/card" android:layout_marginTop="14dp"
+                android:padding="16dp">
+                <TextView android:id="@+id/qCode" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="monospace" android:textSize="13sp"
+                    android:textColor="@color/text" android:lineSpacingExtra="3dp"
+                    android:scrollHorizontally="true"/>
+            </HorizontalScrollView>
+
+            <TextView android:id="@+id/qHint" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:visibility="gone"
+                android:textSize="14sp" android:textColor="@color/muted"
+                android:paddingTop="16dp"/>
+            <TextView android:id="@+id/btnUndo" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:visibility="gone"
+                android:text="Undo last" android:textSize="14sp" android:textColor="@color/accent"
+                android:minHeight="48dp" android:gravity="center_vertical"
+                android:paddingRight="12dp"/>
+
+            <LinearLayout android:id="@+id/qOptions" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical"
+                android:paddingTop="8dp"/>
+
+            <LinearLayout android:id="@+id/qFeedback" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical"
+                android:visibility="gone" android:background="@drawable/card"
+                android:padding="18dp" android:layout_marginTop="8dp">
+                <TextView android:id="@+id/fVerdict" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <TextView android:id="@+id/fExplain" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textSize="15sp"
+                    android:textColor="@color/muted" android:lineSpacingExtra="5dp"
+                    android:paddingTop="10dp"/>
+                <TextView android:id="@+id/fMiscon" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textSize="15sp"
+                    android:textColor="@color/warm" android:lineSpacingExtra="4dp"
+                    android:paddingTop="14dp" android:visibility="gone"/>
+                <TextView android:id="@+id/fSched" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textSize="13sp"
+                    android:textColor="@color/muted" android:paddingTop="14dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout android:id="@+id/qEmpty"
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+        android:visibility="gone" android:padding="28dp">
+        <TextView android:id="@+id/qEmptyTitle" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:gravity="center"
+            android:textSize="24sp" android:textColor="@color/text"/>
+        <TextView android:id="@+id/qEmptyBody" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:gravity="center"
+            android:textSize="15sp" android:textColor="@color/muted"
+            android:lineSpacingExtra="4dp" android:paddingTop="10dp"/>
+    </LinearLayout>
+
+    <TextView android:id="@+id/btnNext" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Next"
+        android:textSize="16sp" android:textStyle="bold" android:textColor="@color/onAccent"
+        android:gravity="center" android:background="@drawable/btn_primary"
+        android:visibility="gone"
+        android:layout_marginLeft="22dp" android:layout_marginRight="22dp"
+        android:layout_marginBottom="18dp"
+        android:paddingTop="15dp" android:paddingBottom="15dp"/>
+</LinearLayout>

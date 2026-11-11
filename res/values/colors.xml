@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Light. Dark is the default the app was designed in and lives in values-night. -->
+<resources>
+    <color name="bg">#F7F8FB</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface2">#EDF0F6</color>
+    <color name="line">#DBE0EA</color>
+    <color name="text">#14161C</color>
+    <color name="muted">#57606F</color>
+    <color name="faint">#626B7C</color>
+    <color name="accent">#4059C7</color>
+    <color name="accentPressed">#243A86</color>
+    <color name="accentDim">#DCE3F8</color>
+    <color name="warm">#9A5E06</color>
+    <color name="good">#14704A</color>
+    <color name="bad">#B93521</color>
+    <color name="onAccent">#FFFFFF</color>
+</resources>

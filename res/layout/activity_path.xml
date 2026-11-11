@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:paddingLeft="22dp" android:paddingRight="14dp"
+        android:paddingTop="16dp" android:paddingBottom="6dp">
+        <LinearLayout android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Traverse"
+                android:textSize="22sp" android:textStyle="bold" android:textColor="@color/text"/>
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Offline · one unit"
+                android:textSize="13sp" android:textColor="@color/muted" android:paddingTop="2dp"/>
+        </LinearLayout>
+        <TextView android:id="@+id/streak" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:visibility="gone"
+            android:textSize="12sp" android:textColor="@color/warm"
+            android:background="@drawable/pill"
+            android:paddingLeft="10dp" android:paddingRight="10dp"
+            android:paddingTop="3dp" android:paddingBottom="3dp"/>
+    </LinearLayout>
+
+    <ScrollView android:id="@+id/pathScroll"
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:scrollbars="none"
+        android:paddingLeft="18dp" android:paddingRight="18dp"
+        android:clipToPadding="false" android:paddingBottom="26dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout android:id="@+id/reviewCard" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical"
+                android:background="@drawable/card_accent" android:padding="20dp"
+                android:layout_marginTop="10dp">
+                <TextView android:id="@+id/reviewKicker" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="START HERE"
+                    android:textSize="11sp" android:textStyle="bold"
+                    android:letterSpacing="0.16" android:textColor="@color/accent"/>
+                <TextView android:id="@+id/reviewTitle" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textSize="24sp"
+                    android:textColor="@color/text" android:paddingTop="8dp"
+                    android:lineSpacingExtra="2dp" android:text="Loading"/>
+                <TextView android:id="@+id/reviewBody" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textSize="15sp"
+                    android:textColor="@color/muted" android:paddingTop="6dp"
+                    android:lineSpacingExtra="3dp"/>
+                <TextView android:id="@+id/btnReview" android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Start the first topic"
+                    android:textSize="16sp" android:textStyle="bold"
+                    android:textColor="@color/onAccent" android:gravity="center"
+                    android:background="@drawable/btn_primary"
+                    android:paddingTop="15dp" android:paddingBottom="15dp"
+                    android:layout_marginTop="18dp"/>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/statRow" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="horizontal"
+                android:paddingTop="14dp" android:paddingBottom="6dp"/>
+
+            <LinearLayout android:id="@+id/pathHost" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical"
+                android:paddingTop="10dp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

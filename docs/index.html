@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Traverse</title>
+<meta name="description" content="Traverse is an offline tutor for one unit of data structures: quizzes, authored misconceptions, and spaced review.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bar"></div>
+<main>
+  <p class="author">Ashwin R</p>
+  <h1>Traverse</h1>
+  <p class="pitch">An offline tutor that brings data-structures questions back before you forget them.</p>
+
+  <h2>What v1 is</h2>
+  <p>One unit, <em>Complexity and correctness</em>. Five topics and fifty questions. You read a short lesson, answer a quiz, and see the explanation either way. A wrong option files the misconception the author wrote for that choice. Items you miss come back the same day. Items you know come back later, on an SM-2 schedule. Topics stay locked until the ones before them are actually underway.</p>
+  <p>It is the first unit, not a course. There is no account, no network, and no second unit hiding behind a menu.</p>
+  <ul>
+    <li>Offline quizzes, graded from an answer key</li>
+    <li>Spaced review and a mastery score that weights a later, cold answer more heavily</li>
+    <li>Prerequisite gating along the path</li>
+  </ul>
+  <p class="muted">Not in this version: code problems, the rest of a DSA syllabus, LeetCode logging, charts, notifications, or search.</p>
+
+  <h2>Screens</h2>
+  <figure>
+    <img src="screenshots/path.png" alt="Traverse path, with a review card above the Complexity and correctness topics">
+    <figcaption>The path. What is due sits above the unit. Later topics stay locked until earlier ones reach the unlock line.</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/topic.png" alt="A topic screen with mastery, a lesson button, and a practise button">
+    <figcaption>A topic: how solid the evidence is, then the lesson or a practice run.</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/lesson.png" alt="A lesson about what Big-O measures, with a Java code sample">
+    <figcaption>The lesson. Code samples follow Java or Python, whichever you set.</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/quiz.png" alt="A multiple-choice question asking what O of n tells you">
+    <figcaption>One question at a time. The explanation is shown after every answer.</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/miss.png" alt="A wrong answer, with the authored misconception and the review schedule">
+    <figcaption>A miss names the belief behind that option, then says when the question returns.</figcaption>
+  </figure>
+
+  <h2>Stack</h2>
+  <p>Java, on Android. No Gradle and no third-party libraries. The curriculum is a JSON file checked before every build. minSdk 24.</p>
+
+  <h2>Install</h2>
+  <p>Build <code>Traverse.apk</code> with <code>bash build.sh</code>. The signed APK is a build product, not a file in the repository, and this page does not link a binary.</p>
+  <p><a href="https://github.com/ashwin-subspace/traverse">Source on GitHub</a></p>
+
+  <footer>Traverse · Ashwin R · MIT</footer>
+</main>
+</body>
+</html>

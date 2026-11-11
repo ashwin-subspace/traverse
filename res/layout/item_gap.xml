@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:background="@drawable/card"
+    android:padding="16dp" android:layout_marginBottom="9dp">
+    <TextView android:id="@+id/gText" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:textSize="15sp"
+        android:textColor="@color/warm" android:lineSpacingExtra="4dp"/>
+    <TextView android:id="@+id/gHits" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:textSize="11sp"
+        android:textColor="@color/muted" android:paddingTop="8dp"/>
+</LinearLayout>

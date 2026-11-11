@@ -1,0 +1,1217 @@
+{
+  "version": 1,
+  "units": [
+    {
+      "id": "complexity",
+      "title": "Complexity and correctness",
+      "ord": 1,
+      "blurb": "Before any data structure, the language you use to judge one.",
+      "topics": [
+        {
+          "id": "cx-what",
+          "title": "What Big-O actually measures",
+          "ord": 1,
+          "prereqs": [],
+          "lesson": [
+            {
+              "type": "text",
+              "md": "Big-O does not measure time. It measures how the amount of work grows as the input grows.\n\nThat distinction is the whole topic. A stopwatch tells you about your laptop, your language and what else was running. Big-O tells you something that stays true on every machine that will ever exist."
+            },
+            {
+              "type": "text",
+              "md": "Say a function does one unit of work per element. Ten elements, ten units. A thousand elements, a thousand units. Double the input, double the work. We call that O(n): the work is proportional to n."
+            },
+            {
+              "type": "code",
+              "lang": "java",
+              "src": "int sum(int[] a) {\n    int total = 0;\n    for (int x : a) {   // runs n times\n        total += x;     // one unit of work\n    }\n    return total;       // O(n)\n}"
+            },
+            {
+              "type": "code",
+              "lang": "python",
+              "src": "def total(a):\n    s = 0\n    for x in a:      # runs n times\n        s += x       # one unit of work\n    return s         # O(n)"
+            },
+            {
+              "type": "callout",
+              "tone": "warn",
+              "md": "O(n) does not mean \"n operations\". It means the work grows *in proportion to* n. A loop doing three things per element is still O(n), because tripling every step does not change how the curve bends."
+            },
+            {
+              "type": "text",
+              "md": "This is why constants get dropped. O(3n) and O(n) describe the same shape, and shape is what survives a change of hardware. Buying a machine twice as fast halves your constant; it does nothing at all to the shape."
+            },
+            {
+              "type": "callout",
+              "tone": "info",
+              "md": "Constants still matter to your users. They just are not what Big-O is for. An O(n) algorithm with a huge constant can lose to an O(n log n) one on every input you actually have. Big-O is a claim about behaviour as n grows without limit."
+            }
+          ],
+          "quiz": [
+            {
+              "id": "cx-what-1",
+              "type": "mcq",
+              "difficulty": 1,
+              "stem": "What does O(n) tell you about an algorithm?",
+              "options": [
+                "It takes n seconds to run",
+                "It performs exactly n operations",
+                "Its work grows in proportion to the input size",
+                "It is faster than any O(n squared) algorithm"
+              ],
+              "answer": 2,
+              "explain": "Big-O describes growth, not duration and not an exact count. Proportional growth means doubling the input roughly doubles the work, whatever the machine.",
+              "misconception": {
+                "0": "reads Big-O as a measure of clock time rather than growth",
+                "1": "reads O(n) as an exact operation count rather than a proportion",
+                "3": "believes a lower complexity class always wins, regardless of input size or constants"
+              }
+            },
+            {
+              "id": "cx-what-2",
+              "type": "mcq",
+              "difficulty": 1,
+              "stem": "A loop over n elements does 5 operations per element. What is its complexity?",
+              "options": [
+                "O(5n)",
+                "O(n)",
+                "O(5)",
+                "O(n to the 5th)"
+              ],
+              "answer": 1,
+              "explain": "Constant factors are dropped, so O(5n) simplifies to O(n). Five times the work per step scales the curve, it does not bend it.",
+              "misconception": {
+                "0": "keeps constant factors in the final notation",
+                "2": "mistakes the per-element constant for the whole complexity",
+                "3": "confuses a repeated factor with an exponent"
+              }
+            },
+            {
+              "id": "cx-what-3",
+              "type": "truefalse",
+              "difficulty": 2,
+              "stem": "An O(n) algorithm is always faster in practice than an O(n squared) algorithm.",
+              "options": [
+                "True",
+                "False"
+              ],
+              "answer": 1,
+              "explain": "Only for large enough n. With a big constant or a small input, the O(n squared) version can easily win. Big-O is a statement about the limit, not about your actual data.",
+              "misconception": {
+                "0": "treats asymptotic ordering as a guarantee at every input size"
+              }
+            },
+            {
+              "id": "cx-what-4",
+              "type": "output",
+              "difficulty": 2,
+              "stem": "How many times does the inner statement run, in terms of n?",
+              "code": {
+                "java": "for (int i = 0; i < n; i++) {\n    for (int j = 0; j < 3; j++) {\n        work();\n    }\n}",
+                "python": "for i in range(n):\n    for j in range(3):\n        work()"
+              },
+              "options": [
+                "3n",
+                "n squared",
+                "3n squared",
+                "n cubed"
+              ],
+              "answer": 0,
+              "explain": "The inner loop is bounded by 3, not by n, so the total is 3n and the complexity is O(n). Nesting alone does not make something quadratic.",
+              "misconception": {
+                "1": "assumes any nested loop is quadratic without checking the inner bound",
+                "2": "multiplies the constant into a quadratic term that is not there",
+                "3": "counts loop depth rather than the work each loop actually does"
+              }
+            },
+            {
+              "id": "cx-what-5",
+              "type": "mcq",
+              "difficulty": 2,
+              "stem": "Why does Big-O deliberately ignore the speed of the machine?",
+              "options": [
+                "Because all computers run at the same speed",
+                "Because hardware changes the constant factor but not the growth curve",
+                "Because Big-O is only used for theoretical algorithms",
+                "Because measuring time is impossible"
+              ],
+              "answer": 1,
+              "explain": "A faster machine divides every step by the same factor. That moves the whole curve down, it does not change its shape, and shape is the thing that decides what happens as n grows.",
+              "misconception": {
+                "0": "misunderstands the abstraction as a claim about real hardware being uniform",
+                "2": "sees complexity analysis as academic rather than a practical prediction",
+                "3": "confuses profiling with asymptotic analysis"
+              }
+            },
+            {
+              "id": "cx-what-6",
+              "type": "mcq",
+              "difficulty": 2,
+              "stem": "Two loops run one after the other, the first n times and the second n times. What is the complexity?",
+              "options": [
+                "O(n squared)",
+                "O(2n), which is O(n)",
+                "O(n log n)",
+                "It cannot be determined"
+              ],
+              "answer": 1,
+              "explain": "Sequential work adds: n + n = 2n, which is O(n). You multiply only when one loop runs inside another.",
+              "misconception": {
+                "0": "multiplies sequential loops instead of adding them",
+                "2": "reaches for a familiar complexity class without deriving it",
+                "3": "believes complexity cannot be determined without running the code"
+              }
+            },
+            {
+              "id": "cx-what-7",
+              "type": "complexity",
+              "difficulty": 1,
+              "stem": "What is the time complexity of reading the element at a known index of an array?",
+              "code": {
+                "java": "int x = a[7];",
+                "python": "x = a[7]"
+              },
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "Depends on the array length"
+              ],
+              "answer": 0,
+              "explain": "The address is computed arithmetically from the start of the array, so the work is the same whether the array holds ten items or ten million.",
+              "misconception": {
+                "1": "imagines some search structure behind array indexing",
+                "2": "thinks the array is scanned to reach the index",
+                "3": "believes array access degrades with size"
+              }
+            },
+            {
+              "id": "cx-what-8",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "An algorithm is O(n). Which statement is strictly correct?",
+              "options": [
+                "Its work grows exactly in proportion to n",
+                "Its work grows at most in proportion to n, ignoring constants",
+                "Its work grows at least in proportion to n",
+                "It performs one operation per element"
+              ],
+              "answer": 1,
+              "explain": "Big-O is an upper bound. An algorithm that is O(n) may well be faster on some inputs. Theta describes an exact bound and Omega describes a lower one.",
+              "misconception": {
+                "0": "reads O as an exact bound, which is Theta",
+                "2": "reads O as a lower bound, which is Omega",
+                "3": "reads O(n) as a literal operation count"
+              }
+            },
+            {
+              "id": "cx-what-9",
+              "type": "blank",
+              "difficulty": 2,
+              "stem": "Doubling the input of an O(n) algorithm multiplies the work by roughly ___.",
+              "options": [
+                "2",
+                "4",
+                "1",
+                "n"
+              ],
+              "answer": 0,
+              "explain": "Proportional growth: twice the input, twice the work. Quadrupling would be O(n squared) behaviour.",
+              "misconception": {
+                "1": "applies quadratic scaling to a linear algorithm",
+                "2": "applies constant-time scaling to a linear algorithm",
+                "3": "confuses the growth factor with the input size itself"
+              }
+            },
+            {
+              "id": "cx-what-10",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "You measure two functions on an input of 1,000 items. A takes 40 ms, B takes 12 ms. What can you conclude about their complexity?",
+              "options": [
+                "B has lower complexity than A",
+                "A is O(n squared) and B is O(n)",
+                "Nothing, from a single input size",
+                "They have the same complexity"
+              ],
+              "answer": 2,
+              "explain": "Complexity is about the shape of the curve, and one point does not describe a curve. Measure across several input sizes and see how the times change; that is what reveals growth.",
+              "misconception": {
+                "0": "infers asymptotic class from a single timing measurement",
+                "1": "assigns specific complexity classes from one data point",
+                "3": "concludes equality from measurements that were not equal"
+              }
+            }
+          ],
+          "problems": []
+        },
+        {
+          "id": "cx-dominant",
+          "title": "Dominant terms",
+          "ord": 2,
+          "prereqs": [
+            "cx-what"
+          ],
+          "lesson": [
+            {
+              "type": "text",
+              "md": "Real code rarely does one clean thing. It sorts, then loops, then loops again. To get a single complexity out of that, you find the term that grows fastest and throw the rest away."
+            },
+            {
+              "type": "text",
+              "md": "Suppose a function costs n squared + 100n + 5000 operations. At n = 10 the constant 5000 dominates completely. At n = 1,000,000 the n squared term is a million times larger than everything else combined. Big-O cares about the second case, so this is O(n squared)."
+            },
+            {
+              "type": "code",
+              "lang": "java",
+              "src": "void f(int[] a) {\n    Arrays.sort(a);                 // O(n log n)\n    for (int x : a) work(x);        // O(n)\n    System.out.println(a[0]);       // O(1)\n}\n// n log n + n + 1  ->  O(n log n)"
+            },
+            {
+              "type": "callout",
+              "tone": "warn",
+              "md": "Add when steps run one after another. Multiply when one runs inside another. Getting these the wrong way round is the most common analysis error there is."
+            },
+            {
+              "type": "text",
+              "md": "The ordering you need, slowest-growing first:\n\nO(1) < O(log n) < O(n) < O(n log n) < O(n squared) < O(n cubed) < O(2 to the n) < O(n factorial)"
+            }
+          ],
+          "quiz": [
+            {
+              "id": "cx-dom-1",
+              "type": "mcq",
+              "difficulty": 1,
+              "stem": "Simplify: n squared + 100n + 5000",
+              "options": [
+                "O(n squared)",
+                "O(n squared + n)",
+                "O(5000)",
+                "O(100n)"
+              ],
+              "answer": 0,
+              "explain": "Only the fastest-growing term survives. For large n the squared term dwarfs the others, and lower terms are dropped along with constants.",
+              "misconception": {
+                "1": "keeps lower-order terms in the final notation",
+                "2": "picks the largest number rather than the fastest-growing term",
+                "3": "picks the term with the biggest coefficient rather than the biggest growth"
+              }
+            },
+            {
+              "id": "cx-dom-2",
+              "type": "complexity",
+              "difficulty": 2,
+              "stem": "A function sorts the array, then scans it once. What is the overall complexity?",
+              "code": {
+                "java": "Arrays.sort(a);\nfor (int x : a) work(x);",
+                "python": "a.sort()\nfor x in a:\n    work(x)"
+              },
+              "options": [
+                "O(n)",
+                "O(n log n)",
+                "O(n squared)",
+                "O(log n)"
+              ],
+              "answer": 1,
+              "explain": "n log n for the sort plus n for the scan is n log n + n, and n log n dominates. The scan is free in comparison.",
+              "misconception": {
+                "0": "ignores the cost of the sort",
+                "2": "multiplies the sequential steps instead of adding them",
+                "3": "confuses the sort's log factor with the whole cost"
+              }
+            },
+            {
+              "id": "cx-dom-3",
+              "type": "output",
+              "difficulty": 2,
+              "stem": "How many times does work() run?",
+              "code": {
+                "java": "for (int i = 0; i < n; i++)\n    for (int j = 0; j < n; j++)\n        work();",
+                "python": "for i in range(n):\n    for j in range(n):\n        work()"
+              },
+              "options": [
+                "2n",
+                "n squared",
+                "n log n",
+                "n"
+              ],
+              "answer": 1,
+              "explain": "The inner loop runs n times for each of the n outer iterations, so the counts multiply: n times n.",
+              "misconception": {
+                "0": "adds nested loops instead of multiplying them",
+                "2": "reaches for n log n without deriving the count",
+                "3": "counts only the outer loop"
+              }
+            },
+            {
+              "id": "cx-dom-4",
+              "type": "mcq",
+              "difficulty": 2,
+              "stem": "Which of these grows fastest as n gets large?",
+              "options": [
+                "n log n",
+                "n squared",
+                "2 to the n",
+                "n cubed"
+              ],
+              "answer": 2,
+              "explain": "Exponential growth eventually overtakes every polynomial. At n = 50, 2 to the n is already larger than 50 cubed by a factor of over a trillion.",
+              "misconception": {
+                "0": "ranks by how complicated the expression looks rather than by growth rate",
+                "1": "ranks by the exponent's appearance rather than by growth type",
+                "3": "assumes the largest visible power wins, missing that the exponent is the variable"
+              }
+            },
+            {
+              "id": "cx-dom-5",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "Two loops, the first running n times and the second running m times, one after the other. What is the complexity?",
+              "options": [
+                "O(n times m)",
+                "O(n plus m)",
+                "O(n squared)",
+                "O(max of n and m)"
+              ],
+              "answer": 1,
+              "explain": "Sequential steps add, giving O(n + m). You cannot simplify to one variable, because n and m grow independently. O(max) is proportional to it but O(n + m) is the standard form.",
+              "misconception": {
+                "0": "multiplies sequential loops, treating them as nested",
+                "2": "collapses two independent variables into one",
+                "3": "drops a term that cannot be dropped when the variables are independent"
+              }
+            },
+            {
+              "id": "cx-dom-6",
+              "type": "output",
+              "difficulty": 3,
+              "stem": "How many times does work() run, in terms of n?",
+              "code": {
+                "java": "for (int i = 0; i < n; i++)\n    for (int j = i; j < n; j++)\n        work();",
+                "python": "for i in range(n):\n    for j in range(i, n):\n        work()"
+              },
+              "options": [
+                "n squared exactly",
+                "about n squared over 2, which is O(n squared)",
+                "n log n",
+                "2n"
+              ],
+              "answer": 1,
+              "explain": "The inner loop shortens each pass: n, then n-1, then n-2, summing to n(n+1)/2. Halving is a constant factor, so this is still O(n squared).",
+              "misconception": {
+                "0": "misses that the inner bound depends on i",
+                "2": "assumes a shrinking inner loop must produce a log factor",
+                "3": "adds the loops instead of summing the series"
+              }
+            },
+            {
+              "id": "cx-dom-7",
+              "type": "order",
+              "difficulty": 2,
+              "stem": "Order these from slowest-growing to fastest-growing.",
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n squared)"
+              ],
+              "answer": 0,
+              "orderAnswer": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "explain": "Constant, then logarithmic, then linear, then quadratic. Knowing this ladder by heart is most of what complexity questions test.",
+              "misconception": {}
+            },
+            {
+              "id": "cx-dom-8",
+              "type": "complexity",
+              "difficulty": 3,
+              "stem": "A loop over n elements calls a helper that is itself O(log n). What is the total?",
+              "code": {
+                "java": "for (int i = 0; i < n; i++)\n    binarySearch(a, i);   // O(log n)",
+                "python": "for i in range(n):\n    binary_search(a, i)   # O(log n)"
+              },
+              "options": [
+                "O(n plus log n)",
+                "O(n log n)",
+                "O(log n)",
+                "O(n squared)"
+              ],
+              "answer": 1,
+              "explain": "Work inside a loop multiplies by the number of iterations: n times log n. The helper's cost is paid on every pass.",
+              "misconception": {
+                "0": "adds the nested cost instead of multiplying it",
+                "2": "ignores the surrounding loop",
+                "3": "assumes any nesting is quadratic without looking at the inner cost"
+              }
+            },
+            {
+              "id": "cx-dom-9",
+              "type": "truefalse",
+              "difficulty": 2,
+              "stem": "O(n squared + n) is a correct but non-standard way to write O(n squared).",
+              "options": [
+                "True",
+                "False"
+              ],
+              "answer": 0,
+              "explain": "It is not wrong, merely unsimplified. Conventionally you reduce to the dominant term, exactly as you would not leave an answer as 4/8.",
+              "misconception": {
+                "1": "believes an unsimplified bound is incorrect rather than untidy"
+              }
+            },
+            {
+              "id": "cx-dom-10",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "Why is O(log n) so much better than O(n) at large scale?",
+              "options": [
+                "Because logarithms are always small numbers",
+                "Because doubling n adds only one step, rather than doubling the work",
+                "Because it never examines the whole input",
+                "Because log n is a constant"
+              ],
+              "answer": 1,
+              "explain": "That is what a logarithm is. Going from a thousand to a million items adds about ten steps to a binary search, while a linear scan does a thousand times the work.",
+              "misconception": {
+                "0": "treats log n as small rather than slow-growing",
+                "2": "confuses a property of some log-time algorithms with the reason",
+                "3": "treats a slowly growing function as constant"
+              }
+            }
+          ],
+          "problems": []
+        },
+        {
+          "id": "cx-classes",
+          "title": "Reading a loop's shape",
+          "ord": 3,
+          "prereqs": [
+            "cx-dominant"
+          ],
+          "lesson": [
+            {
+              "type": "text",
+              "md": "Most complexity questions are answered by looking at how the loop variable changes. There are only a few shapes, and once you recognise them you stop having to think."
+            },
+            {
+              "type": "text",
+              "md": "The variable is added to, so the loop runs n times. That is linear."
+            },
+            {
+              "type": "code",
+              "lang": "java",
+              "src": "for (int i = 0; i < n; i++)   // i++  ->  n steps  ->  O(n)"
+            },
+            {
+              "type": "text",
+              "md": "The variable is multiplied or divided, so the count is how many times you can double before passing n. That is logarithmic."
+            },
+            {
+              "type": "code",
+              "lang": "java",
+              "src": "for (int i = 1; i < n; i = i * 2)   // 1,2,4,8...  ->  log n steps  ->  O(log n)"
+            },
+            {
+              "type": "code",
+              "lang": "python",
+              "src": "i = 1\nwhile i < n:      # 1,2,4,8...\n    i = i * 2     # O(log n)"
+            },
+            {
+              "type": "callout",
+              "tone": "info",
+              "md": "Adding to the counter gives linear. Multiplying it gives logarithmic. That single rule answers most exam questions on the topic."
+            },
+            {
+              "type": "text",
+              "md": "The base of the logarithm never appears in the notation. Changing base multiplies by a constant, and constants are dropped, so O(log base 2 of n) and O(log base 10 of n) are both written O(log n)."
+            }
+          ],
+          "quiz": [
+            {
+              "id": "cx-cls-1",
+              "type": "complexity",
+              "difficulty": 2,
+              "stem": "What is the complexity of this loop?",
+              "code": {
+                "java": "for (int i = 1; i < n; i = i * 2) work();",
+                "python": "i = 1\nwhile i < n:\n    work()\n    i = i * 2"
+              },
+              "options": [
+                "O(n)",
+                "O(log n)",
+                "O(n log n)",
+                "O(1)"
+              ],
+              "answer": 1,
+              "explain": "i doubles each pass, so it reaches n after about log base 2 of n steps. Multiplying the counter is the signature of logarithmic time.",
+              "misconception": {
+                "0": "counts any single loop as linear without reading how the counter changes",
+                "2": "adds a factor of n that no enclosing loop provides",
+                "3": "treats a loop that runs few times as constant"
+              }
+            },
+            {
+              "id": "cx-cls-2",
+              "type": "complexity",
+              "difficulty": 2,
+              "stem": "What is the complexity of this loop?",
+              "code": {
+                "java": "for (int i = n; i > 0; i = i / 2) work();",
+                "python": "i = n\nwhile i > 0:\n    work()\n    i = i // 2"
+              },
+              "options": [
+                "O(n)",
+                "O(log n)",
+                "O(n squared)",
+                "O(n over 2)"
+              ],
+              "answer": 1,
+              "explain": "Halving reaches 1 in about log n steps. Dividing the counter is logarithmic for exactly the same reason that multiplying it is.",
+              "misconception": {
+                "0": "counts iterations as n because the loop starts at n",
+                "2": "treats a single loop as quadratic, when nesting is what produces a square",
+                "3": "keeps the constant factor, and misses that halving repeatedly is logarithmic rather than linear"
+              }
+            },
+            {
+              "id": "cx-cls-3",
+              "type": "mcq",
+              "difficulty": 1,
+              "stem": "Why is the base of the logarithm left out of O(log n)?",
+              "options": [
+                "Because base 2 is assumed everywhere",
+                "Because changing base only multiplies by a constant, which is dropped",
+                "Because the base does not affect the number of steps",
+                "Because logarithms have no base"
+              ],
+              "answer": 1,
+              "explain": "log base 10 of n equals log base 2 of n divided by log base 2 of 10, a fixed factor. Constants are dropped, so the base disappears from the notation.",
+              "misconception": {
+                "0": "believes a convention rather than the mathematical reason",
+                "2": "believes the base has no effect on the actual step count, when it changes it by a constant factor",
+                "3": "has a gap in the underlying maths"
+              }
+            },
+            {
+              "id": "cx-cls-4",
+              "type": "complexity",
+              "difficulty": 3,
+              "stem": "What is the complexity of this pair of loops?",
+              "code": {
+                "java": "for (int i = 0; i < n; i++)\n    for (int j = 1; j < n; j = j * 2)\n        work();",
+                "python": "for i in range(n):\n    j = 1\n    while j < n:\n        work()\n        j = j * 2"
+              },
+              "options": [
+                "O(n squared)",
+                "O(n log n)",
+                "O(log n)",
+                "O(n)"
+              ],
+              "answer": 1,
+              "explain": "A linear outer loop containing a logarithmic inner loop multiplies to n log n. This is the shape of the good sorting algorithms.",
+              "misconception": {
+                "0": "assumes nested loops are quadratic without reading the inner counter",
+                "2": "ignores the outer loop",
+                "3": "ignores the inner loop"
+              }
+            },
+            {
+              "id": "cx-cls-5",
+              "type": "complexity",
+              "difficulty": 2,
+              "stem": "What is the complexity of appending to the end of a fixed-capacity array?",
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n squared)"
+              ],
+              "answer": 0,
+              "explain": "You write at a known index and increase the count. No part of that depends on how many items are already stored.",
+              "misconception": {
+                "1": "imagines a search structure behind a direct write",
+                "2": "assumes the array must be traversed to find the end",
+                "3": "assumes a quadratic cost where no repeated pass over the data exists"
+              }
+            },
+            {
+              "id": "cx-cls-6",
+              "type": "complexity",
+              "difficulty": 2,
+              "stem": "What is the complexity of inserting at the front of an array, shifting everything right?",
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n squared)"
+              ],
+              "answer": 2,
+              "explain": "Every existing element moves one place, so the work is proportional to how many there are. This is precisely the weakness a linked list is designed to fix.",
+              "misconception": {
+                "0": "assumes all array writes are constant time regardless of shifting",
+                "1": "imagines a search or index structure behind a simple shift of elements",
+                "3": "double counts the single shifting pass"
+              }
+            },
+            {
+              "id": "cx-cls-7",
+              "type": "output",
+              "difficulty": 3,
+              "stem": "Roughly how many times does work() run when n is 1,000,000?",
+              "code": {
+                "java": "for (int i = 1; i < n; i = i * 2) work();",
+                "python": "i = 1\nwhile i < n:\n    work()\n    i = i * 2"
+              },
+              "options": [
+                "About 20",
+                "About 1,000",
+                "About 1,000,000",
+                "About 500,000"
+              ],
+              "answer": 0,
+              "explain": "2 to the 20 is just over a million, so doubling from 1 reaches a million in about twenty steps. That gap between twenty and a million is why logarithmic time matters.",
+              "misconception": {
+                "1": "estimates the square root instead of the logarithm",
+                "2": "reads the loop as linear",
+                "3": "halves n instead of taking its logarithm"
+              }
+            },
+            {
+              "id": "cx-cls-8",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "A loop runs n times and calls a function that itself loops n times. What is the complexity?",
+              "options": [
+                "O(n)",
+                "O(2n)",
+                "O(n squared)",
+                "O(n log n)"
+              ],
+              "answer": 2,
+              "explain": "Complexity does not care whether the nesting is written inline or hidden behind a call. Always look inside the functions you call.",
+              "misconception": {
+                "0": "counts only the visible loop and ignores the callee's cost",
+                "1": "adds the callee's cost instead of multiplying by the iterations",
+                "3": "assumes a log factor that nothing in the code produces"
+              }
+            },
+            {
+              "id": "cx-cls-9",
+              "type": "complexity",
+              "difficulty": 3,
+              "stem": "What is the complexity of this loop?",
+              "code": {
+                "java": "for (int i = 0; i < n; i++)\n    for (int j = 0; j < 1000; j++)\n        work();",
+                "python": "for i in range(n):\n    for j in range(1000):\n        work()"
+              },
+              "options": [
+                "O(n)",
+                "O(1000n)",
+                "O(n squared)",
+                "O(n times 1000n)"
+              ],
+              "answer": 0,
+              "explain": "The inner loop is fixed at 1000 no matter how large n gets, so it is a constant factor: O(1000n) is O(n). Slow in practice, linear in shape.",
+              "misconception": {
+                "1": "keeps the constant in the final notation",
+                "2": "treats every nested loop as quadratic",
+                "3": "treats a constant bound as if it grew with n"
+              }
+            },
+            {
+              "id": "cx-cls-10",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "Which loop shape produces O(n log n)?",
+              "options": [
+                "A loop that halves the counter, inside a loop that halves the counter",
+                "A loop that increments, inside a loop that increments",
+                "A loop that doubles the counter, inside a loop that increments",
+                "A single loop that doubles the counter"
+              ],
+              "answer": 2,
+              "explain": "n iterations outside, log n inside, multiplied. That is the shape of merge sort and heap sort.",
+              "misconception": {
+                "0": "gives log squared, by nesting two logarithmic loops",
+                "1": "gives quadratic, by nesting two linear loops",
+                "3": "gives plain logarithmic, with no enclosing linear loop"
+              }
+            }
+          ],
+          "problems": []
+        },
+        {
+          "id": "cx-space",
+          "title": "Space, and what recursion costs",
+          "ord": 4,
+          "prereqs": [
+            "cx-dominant"
+          ],
+          "lesson": [
+            {
+              "type": "text",
+              "md": "Time is not the only resource. Space complexity asks how much extra memory an algorithm needs as the input grows, and it is counted the same way: growth, constants dropped."
+            },
+            {
+              "type": "text",
+              "md": "The word that matters is *extra*. The input itself is normally not counted, because you were given it. What counts is what you allocate on top."
+            },
+            {
+              "type": "code",
+              "lang": "java",
+              "src": "int max(int[] a) {\n    int best = a[0];             // one variable, whatever n is\n    for (int x : a)\n        if (x > best) best = x;\n    return best;                 // O(1) extra space\n}"
+            },
+            {
+              "type": "code",
+              "lang": "java",
+              "src": "int[] doubled(int[] a) {\n    int[] out = new int[a.length];   // grows with n\n    for (int i = 0; i < a.length; i++)\n        out[i] = a[i] * 2;\n    return out;                      // O(n) extra space\n}"
+            },
+            {
+              "type": "callout",
+              "tone": "warn",
+              "md": "Recursion is not free. Every pending call keeps a frame on the call stack, so a recursion n deep costs O(n) space even when the function allocates nothing at all. This is the single most missed source of space cost."
+            },
+            {
+              "type": "code",
+              "lang": "python",
+              "src": "def count_down(n):\n    if n == 0:\n        return\n    count_down(n - 1)   # n frames alive at once  ->  O(n) space"
+            },
+            {
+              "type": "text",
+              "md": "This is also why deep recursion crashes with a stack overflow while an equivalent loop runs happily. The loop keeps one frame; the recursion keeps n."
+            }
+          ],
+          "quiz": [
+            {
+              "id": "cx-sp-1",
+              "type": "complexity",
+              "difficulty": 1,
+              "stem": "What is the extra space complexity of finding the maximum with a single variable?",
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n squared)"
+              ],
+              "answer": 0,
+              "explain": "One variable, regardless of input size. The input array is not counted as extra space because you did not allocate it.",
+              "misconception": {
+                "1": "assumes some hidden structure grows with the input",
+                "2": "counts the input array as extra space",
+                "3": "reads a quadratic cost into a single pass that stores nothing"
+              }
+            },
+            {
+              "id": "cx-sp-2",
+              "type": "complexity",
+              "difficulty": 2,
+              "stem": "What is the space complexity of this function?",
+              "code": {
+                "java": "int[] copy(int[] a) {\n    int[] b = new int[a.length];\n    for (int i = 0; i < a.length; i++) b[i] = a[i];\n    return b;\n}",
+                "python": "def copy(a):\n    b = [0] * len(a)\n    for i in range(len(a)):\n        b[i] = a[i]\n    return b"
+              },
+              "options": [
+                "O(1)",
+                "O(n)",
+                "O(n squared)",
+                "O(log n)"
+              ],
+              "answer": 1,
+              "explain": "A new array proportional to the input is allocated, so the extra space grows with n.",
+              "misconception": {
+                "0": "counts only scalar variables and overlooks the allocated array",
+                "2": "confuses the single allocation with a nested one",
+                "3": "assumes a logarithmic cost where a full copy is being allocated"
+              }
+            },
+            {
+              "id": "cx-sp-3",
+              "type": "complexity",
+              "difficulty": 3,
+              "stem": "What is the space complexity of this recursion?",
+              "code": {
+                "java": "int down(int n) {\n    if (n == 0) return 0;\n    return down(n - 1);\n}",
+                "python": "def down(n):\n    if n == 0:\n        return 0\n    return down(n - 1)"
+              },
+              "options": [
+                "O(1), it allocates nothing",
+                "O(log n)",
+                "O(n)",
+                "O(n squared)"
+              ],
+              "answer": 2,
+              "explain": "n calls are alive at once, each holding a stack frame. Allocating nothing explicitly does not make a recursion free.",
+              "misconception": {
+                "0": "believes recursion costs no space because no allocation is written",
+                "1": "assumes recursion depth is logarithmic when nothing is being divided",
+                "3": "multiplies recursion depth by itself instead of counting frames once per level"
+              }
+            },
+            {
+              "id": "cx-sp-4",
+              "type": "truefalse",
+              "difficulty": 2,
+              "stem": "An iterative loop and an equivalent recursion always use the same amount of space.",
+              "options": [
+                "True",
+                "False"
+              ],
+              "answer": 1,
+              "explain": "The loop reuses one frame; the recursion keeps one per pending call. That is exactly why deep recursion overflows the stack and the loop does not.",
+              "misconception": {
+                "0": "does not account for the call stack when comparing the two"
+              }
+            },
+            {
+              "id": "cx-sp-5",
+              "type": "complexity",
+              "difficulty": 3,
+              "stem": "A balanced binary tree of n nodes is traversed recursively. What is the space complexity?",
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n log n)"
+              ],
+              "answer": 1,
+              "explain": "The stack holds one frame per level, and a balanced tree is about log n levels deep. An unbalanced tree degrades to O(n), which is the case worth remembering.",
+              "misconception": {
+                "0": "forgets the call stack entirely",
+                "2": "counts one frame per node rather than per level",
+                "3": "multiplies node count by depth"
+              }
+            },
+            {
+              "id": "cx-sp-6",
+              "type": "mcq",
+              "difficulty": 2,
+              "stem": "Why is the input array usually excluded from space complexity?",
+              "options": [
+                "Because arrays are stored outside memory",
+                "Because it measures extra space the algorithm allocates, not what it was handed",
+                "Because the input is always small",
+                "Because arrays are constant space"
+              ],
+              "answer": 1,
+              "explain": "The convention isolates the algorithm's own cost. Two algorithms solving the same problem receive the same input, so counting it would tell you nothing that distinguishes them.",
+              "misconception": {
+                "0": "has a gap in how memory works",
+                "2": "assumes something about input size that no analysis assumes",
+                "3": "believes an array of n elements takes constant space"
+              }
+            },
+            {
+              "id": "cx-sp-7",
+              "type": "complexity",
+              "difficulty": 3,
+              "stem": "What is the space complexity here?",
+              "code": {
+                "java": "boolean[] seen = new boolean[n];\nfor (int i = 0; i < n; i++)\n    for (int j = 0; j < n; j++)\n        work(seen);",
+                "python": "seen = [False] * n\nfor i in range(n):\n    for j in range(n):\n        work(seen)"
+              },
+              "options": [
+                "O(1)",
+                "O(n)",
+                "O(n squared)",
+                "O(n cubed)"
+              ],
+              "answer": 1,
+              "explain": "Time is O(n squared) but space is O(n): one array of n booleans, allocated once. Looping over a structure repeatedly does not allocate it repeatedly.",
+              "misconception": {
+                "0": "overlooks the allocated array",
+                "2": "reads the time complexity as the space complexity",
+                "3": "adds a dimension to the space cost that no third allocation creates"
+              }
+            },
+            {
+              "id": "cx-sp-8",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "An algorithm is O(n) time and O(1) space. What does that mean in practice?",
+              "options": [
+                "It reads each element once and keeps only a fixed number of variables",
+                "It is faster than any O(n log n) algorithm",
+                "It uses no memory at all",
+                "It cannot modify the input"
+              ],
+              "answer": 0,
+              "explain": "One pass, a handful of running variables. Two pointers and running-sum techniques both live in this shape, which is why they are so prized.",
+              "misconception": {
+                "1": "conflates a space bound with a guarantee about speed",
+                "2": "reads O(1) space as zero memory rather than constant memory",
+                "3": "invents a constraint that the notation does not express"
+              }
+            },
+            {
+              "id": "cx-sp-9",
+              "type": "truefalse",
+              "difficulty": 2,
+              "stem": "Trading extra memory for less time is a standard technique.",
+              "options": [
+                "True",
+                "False"
+              ],
+              "answer": 0,
+              "explain": "It has a name: the space-time tradeoff. A hash set turns an O(n squared) scan into an O(n) one by spending O(n) memory, which is most of what the hashing unit is about.",
+              "misconception": {
+                "1": "has not yet met the tradeoff that underpins hashing and dynamic programming"
+              }
+            },
+            {
+              "id": "cx-sp-10",
+              "type": "complexity",
+              "difficulty": 3,
+              "stem": "What is the space complexity of this recursion?",
+              "code": {
+                "java": "int half(int n) {\n    if (n <= 1) return 0;\n    return 1 + half(n / 2);\n}",
+                "python": "def half(n):\n    if n <= 1:\n        return 0\n    return 1 + half(n // 2)"
+              },
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n log n)"
+              ],
+              "answer": 1,
+              "explain": "n halves each call, so the recursion is about log n deep and holds that many frames. Depth is what determines recursive space, not the number of calls made overall.",
+              "misconception": {
+                "0": "forgets the call stack",
+                "2": "assumes all recursion is linear in depth without reading how the argument shrinks",
+                "3": "multiplies the depth by n, when only the depth occupies the stack"
+              }
+            }
+          ],
+          "problems": []
+        },
+        {
+          "id": "cx-cases",
+          "title": "Best, worst, and amortised",
+          "ord": 5,
+          "prereqs": [
+            "cx-classes",
+            "cx-space"
+          ],
+          "lesson": [
+            {
+              "type": "text",
+              "md": "One algorithm can have several complexities, depending on what the input looks like. A linear search finds the target immediately if it is first, and scans everything if it is last or absent."
+            },
+            {
+              "type": "text",
+              "md": "Best case is the luckiest input. Worst case is the unluckiest. Average case is what happens across typical inputs. When someone states a complexity without qualifying it, they almost always mean the worst case, because that is the only one that is a promise."
+            },
+            {
+              "type": "code",
+              "lang": "java",
+              "src": "int find(int[] a, int target) {\n    for (int i = 0; i < a.length; i++)\n        if (a[i] == target) return i;   // best: first element, O(1)\n    return -1;                          // worst: absent, O(n)\n}"
+            },
+            {
+              "type": "callout",
+              "tone": "warn",
+              "md": "Amortised is not the average case. Average case is about which input you happen to get. Amortised is about the cost of one operation spread across a long sequence of operations, and it holds even for the unluckiest sequence."
+            },
+            {
+              "type": "text",
+              "md": "A dynamic array is the standard example. Appending is usually O(1), but when it fills up it allocates a bigger array and copies everything, which is O(n). Because it doubles, that expensive copy happens rarely enough that the cost per append averages to a constant. Appending is O(1) amortised."
+            },
+            {
+              "type": "text",
+              "md": "Hash table lookup is the reverse warning: O(1) average, but O(n) worst case when everything collides into one bucket. Quoting only the average hides a real failure mode."
+            }
+          ],
+          "quiz": [
+            {
+              "id": "cx-cs-1",
+              "type": "complexity",
+              "difficulty": 1,
+              "stem": "What is the best case for a linear search?",
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n squared)"
+              ],
+              "answer": 0,
+              "explain": "The target is the first element you check, so you return after one comparison.",
+              "misconception": {
+                "1": "confuses linear search with binary search",
+                "2": "reports the worst case when asked for the best",
+                "3": "reads a nested cost into a single scan"
+              }
+            },
+            {
+              "id": "cx-cs-2",
+              "type": "complexity",
+              "difficulty": 1,
+              "stem": "What is the worst case for a linear search?",
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n squared)"
+              ],
+              "answer": 2,
+              "explain": "The target is last, or missing entirely, so every element is examined.",
+              "misconception": {
+                "0": "reports the best case when asked for the worst",
+                "1": "confuses linear search with binary search, which needs sorted input",
+                "3": "reads a nested cost into a single scan"
+              }
+            },
+            {
+              "id": "cx-cs-3",
+              "type": "mcq",
+              "difficulty": 2,
+              "stem": "When a complexity is quoted without saying which case, which is normally meant?",
+              "options": [
+                "Best case",
+                "Worst case",
+                "Average case",
+                "Amortised case"
+              ],
+              "answer": 1,
+              "explain": "The worst case is the only one that is a guarantee. Best case describes one lucky input and promises nothing.",
+              "misconception": {
+                "0": "assumes the most flattering figure is the convention",
+                "2": "assumes typical behaviour is the default claim",
+                "3": "conflates amortised analysis with the default convention"
+              }
+            },
+            {
+              "id": "cx-cs-4",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "What does it mean that appending to a dynamic array is O(1) amortised?",
+              "options": [
+                "Every append is constant time",
+                "Appends are constant on average across a sequence, with occasional O(n) resizes",
+                "Appends are constant only for typical inputs",
+                "Appending is constant only when the array is not full"
+              ],
+              "answer": 1,
+              "explain": "Individual appends can be O(n) when a resize happens, but doubling makes those rare enough that the cost per append averages to a constant over any long sequence.",
+              "misconception": {
+                "0": "reads amortised as a guarantee about every single operation",
+                "2": "conflates amortised with average case over inputs",
+                "3": "describes the fast path but misses that amortised analysis includes the resize"
+              }
+            },
+            {
+              "id": "cx-cs-5",
+              "type": "truefalse",
+              "difficulty": 3,
+              "stem": "Amortised complexity and average-case complexity mean the same thing.",
+              "options": [
+                "True",
+                "False"
+              ],
+              "answer": 1,
+              "explain": "Average case is over the distribution of inputs. Amortised is over a sequence of operations and holds even for the worst possible sequence, which makes it a much stronger claim.",
+              "misconception": {
+                "0": "treats amortised and average case as interchangeable, the classic exam trap on this topic"
+              }
+            },
+            {
+              "id": "cx-cs-6",
+              "type": "complexity",
+              "difficulty": 2,
+              "stem": "What is the worst case for looking up a key in a hash table?",
+              "options": [
+                "O(1)",
+                "O(log n)",
+                "O(n)",
+                "O(n squared)"
+              ],
+              "answer": 2,
+              "explain": "If every key collides into one bucket the lookup degrades to scanning a list of n items. O(1) is the average case, not a promise.",
+              "misconception": {
+                "0": "quotes the average case as though it were the worst",
+                "1": "confuses a hash table with a balanced tree",
+                "3": "overstates the collision cost, which is one bucket scan rather than a nested one"
+              }
+            },
+            {
+              "id": "cx-cs-7",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "Why is the worst case usually the one worth quoting?",
+              "options": [
+                "It is the easiest to calculate",
+                "It is the only one that guarantees behaviour on every input",
+                "It is always the same as the average case",
+                "Best case is impossible to determine"
+              ],
+              "answer": 1,
+              "explain": "A worst-case bound is a promise nothing can break. The other cases describe what tends to happen, which is no use when an adversary or an unlucky data set picks your input.",
+              "misconception": {
+                "0": "picks convenience as the reason rather than the guarantee",
+                "2": "believes the cases usually coincide, when they often differ sharply",
+                "3": "believes best case is undecidable"
+              }
+            },
+            {
+              "id": "cx-cs-8",
+              "type": "complexity",
+              "difficulty": 3,
+              "stem": "Quicksort's average case is O(n log n). What is its worst case?",
+              "options": [
+                "O(n log n)",
+                "O(n)",
+                "O(n squared)",
+                "O(2 to the n)"
+              ],
+              "answer": 2,
+              "explain": "With a bad pivot every time, each partition removes only one element, giving n levels of n work. This is why real implementations randomise or median-select the pivot.",
+              "misconception": {
+                "0": "assumes average and worst coincide",
+                "1": "quotes a bound better than the average, which cannot be a worst case",
+                "3": "treats a bad pivot as exponential, when it degrades to a quadratic number of comparisons"
+              }
+            },
+            {
+              "id": "cx-cs-9",
+              "type": "mcq",
+              "difficulty": 2,
+              "stem": "A sorted array is searched with binary search. What is the best case?",
+              "options": [
+                "O(1), the middle element is the target",
+                "O(log n)",
+                "O(n)",
+                "O(n log n)"
+              ],
+              "answer": 0,
+              "explain": "The first probe lands on the target, so it returns immediately. The worst case is the familiar O(log n).",
+              "misconception": {
+                "1": "reports the worst case when asked for the best",
+                "2": "confuses binary search with linear search",
+                "3": "quotes the cost of sorting rather than of searching an already sorted array"
+              }
+            },
+            {
+              "id": "cx-cs-10",
+              "type": "mcq",
+              "difficulty": 3,
+              "stem": "You need a hard guarantee on response time. Which figure should you design against?",
+              "options": [
+                "Best case",
+                "Average case",
+                "Worst case",
+                "Amortised case"
+              ],
+              "answer": 2,
+              "explain": "Only the worst case bounds every input. Amortised is close, but it bounds a sequence rather than any individual operation, so a single call can still be slow.",
+              "misconception": {
+                "0": "designs a guarantee against the luckiest possible input",
+                "1": "designs a guarantee against typical behaviour",
+                "3": "believes an amortised bound constrains each individual operation"
+              }
+            }
+          ],
+          "problems": []
+        }
+      ]
+    }
+  ]
+}

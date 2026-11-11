@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:paddingLeft="22dp" android:paddingRight="22dp"
+        android:paddingTop="16dp" android:paddingBottom="8dp">
+        <TextView android:id="@+id/btnBack" android:layout_width="0dp"
+            android:layout_weight="1" android:layout_height="wrap_content" android:text="Back"
+            android:minHeight="48dp" android:gravity="center_vertical"
+            android:textSize="15sp" android:textColor="@color/muted"/>
+        <TextView android:id="@+id/langChip" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:textSize="13sp"
+            android:textColor="@color/accent" android:background="@drawable/pill"
+            android:minHeight="40dp" android:gravity="center"
+            android:clickable="true" android:focusable="true"
+            android:paddingLeft="14dp" android:paddingRight="14dp"
+            android:paddingTop="8dp" android:paddingBottom="8dp"/>
+    </LinearLayout>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:scrollbars="none"
+        android:paddingLeft="22dp" android:paddingRight="22dp"
+        android:clipToPadding="false" android:paddingBottom="20dp">
+        <LinearLayout android:id="@+id/lessonHost" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical">
+            <TextView android:id="@+id/lTitle" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textSize="28sp"
+                android:textColor="@color/text" android:lineSpacingExtra="2dp"
+                android:paddingBottom="10dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView android:id="@+id/btnCheck" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Check yourself"
+        android:textSize="15sp" android:textStyle="bold" android:textColor="@color/onAccent"
+        android:gravity="center" android:background="@drawable/btn_primary"
+        android:layout_marginLeft="22dp" android:layout_marginRight="22dp"
+        android:layout_marginBottom="18dp"
+        android:paddingTop="15dp" android:paddingBottom="15dp"/>
+</LinearLayout>
